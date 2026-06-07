@@ -26,7 +26,7 @@ export default function Hero({ onSearch }) {
   return (
     <section className="hero" id="hero" ref={heroRef}>
       <div className="hero-bg">
-        <img className="hero-img" alt="Edificio residencial en Caracas" src="/avila-caracas.jpeg" />
+        <img className="hero-img" alt="Edificio residencial en Caracas" src="/hero-edificio.jpg" />
         <div className="hero-scrim" />
         <div className="hero-grain" />
       </div>
