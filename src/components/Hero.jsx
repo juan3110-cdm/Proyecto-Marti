@@ -18,37 +18,37 @@ export default function Hero({ onSearch }) {
 
   const go = () => {
     onSearch({ op, type, zone, q })
-    document.getElementById('propiedades')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    setTimeout(() => {
+      document.getElementById('propiedades')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 50)
   }
 
   return (
     <section className="hero" id="hero" ref={heroRef}>
       <div className="hero-bg">
-        <img className="hero-img" alt="El Ávila sobre Caracas, Venezuela" src="/avila-caracas.jpeg" />
+        <img className="hero-img" alt="Edificio residencial en Caracas" src="/avila-caracas.jpeg" />
         <div className="hero-scrim" />
         <div className="hero-grain" />
       </div>
 
       <div className="container hero-inner">
-        <div className="hero-copy">
-          <p className="hero-kicker">
-            <span className="hero-kicker-line" />
-            Bienes raíces en Venezuela · desde 2003
-          </p>
-          <h1 className="hero-title">
-            <span className="hl" style={{ '--i': 1 }}>Su próxima propiedad,</span>
-            <span className="hl" style={{ '--i': 2 }}>en las <em>mejores manos</em></span>
-            <span className="hl" style={{ '--i': 3 }}>de Venezuela.</span>
-          </h1>
-          <p className="hero-tagline">
-            Especialistas en bienes raíces con más de 20 años de experiencia en Caracas y la Isla de Margarita.
-          </p>
-          <div className="hero-actions">
-            <a href="#propiedades" className="btn btn-gold-solid">Ver propiedades</a>
-            <a href="https://wa.me/584248462562" target="_blank" rel="noopener" className="btn btn-line">
-              <WaIcon /> Hablar por WhatsApp
-            </a>
-          </div>
+        <p className="hero-kicker">
+          <span className="hero-kicker-line" />
+          Bienes raíces en Venezuela · desde 2003
+        </p>
+        <h1 className="hero-title">
+          <span className="hl" style={{ '--i': 1 }}>Su próxima propiedad,</span>
+          <span className="hl" style={{ '--i': 2 }}>en las <em>mejores manos</em></span>
+          <span className="hl" style={{ '--i': 3 }}>de Venezuela.</span>
+        </h1>
+        <p className="hero-tagline">
+          Especialistas en bienes raíces con más de 20 años de experiencia en Caracas y la Isla de Margarita.
+        </p>
+        <div className="hero-actions">
+          <a href="#propiedades" className="btn btn-gold-solid">Ver propiedades</a>
+          <a href="https://wa.me/584248462562" target="_blank" rel="noopener" className="btn btn-line">
+            <WaIcon /> Hablar por WhatsApp
+          </a>
         </div>
 
         <div className="hero-meta">
@@ -59,7 +59,7 @@ export default function Hero({ onSearch }) {
       </div>
 
       <div className="container hero-search-dock">
-        <div className="search-wrap" data-d="3">
+        <div className="search-wrap">
           <div className="search-lead">Encuentra tu propiedad</div>
           <div className="search" role="search">
             <div className="search-field select">

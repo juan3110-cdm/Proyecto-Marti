@@ -12,9 +12,10 @@ export function useReveal() {
           if (en.isIntersecting) { en.target.classList.add('is-visible'); io.unobserve(en.target) }
         })
       },
-      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.1, rootMargin: '0px 0px -30px 0px' }
     )
+    // Observe all current .reveal elements on mount only
     document.querySelectorAll('.reveal').forEach(el => io.observe(el))
     return () => io.disconnect()
-  })
+  }, []) // run once on mount
 }
