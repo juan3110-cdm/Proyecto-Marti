@@ -20,8 +20,8 @@
   --line-dk:     #34322E;
   --muted:       #6E6A62;
   --muted-on-dk: #A8A39A;
-  --display:     "Cormorant Garamond", Georgia, "Times New Roman", serif;
-  --text:        "Hanken Grotesk", system-ui, sans-serif;
+  --display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --text:    "Playfair Display", Georgia, "Times New Roman", serif;
   --radius:      18px;
   --radius-sm:   12px;
   --radius-pill: 999px;
@@ -40,7 +40,7 @@ body {
   background: var(--paper);
   font-size: 17px;
   line-height: 1.65;
-  font-weight: 450;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
@@ -52,7 +52,7 @@ button { font-family: inherit; cursor: pointer; }
 
 h1,h2,h3,h4 {
   font-family: var(--display);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.06;
   letter-spacing: -.01em;
   margin: 0;
@@ -98,7 +98,7 @@ h1,h2,h3,h4 {
 /* ---------- Buttons ---------- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  font-family: var(--text); font-weight: 700; font-size: 15px;
+  font-family: var(--display); font-weight: 600; font-size: 15px;
   padding: 15px 26px; border-radius: var(--radius-pill);
   border: 1.5px solid transparent; white-space: nowrap;
   transition: transform .25s var(--ease), background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease), box-shadow .25s var(--ease);
