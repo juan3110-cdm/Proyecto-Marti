@@ -1,197 +1,240 @@
-// Fuente: PROPIEDADES A VENDER.xlsx — datos reales Proyecto Martí
-const PROPS = [
+// Fuente: PROPIEDADES A VENDER.xlsx — 20 propiedades reales de Proyecto Martí.
+// Las fotos son provisionales (placeholders por categoría) hasta cargar las reales.
 
-  // ── CASAS ──────────────────────────────────────────────────────────────────
+const FOTOS = {
+  apartamento: [
+    'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800',
+    'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800',
+    'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800',
+  ],
+  casa: [
+    'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800',
+    'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800',
+    'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800',
+  ],
+  playa: [
+    'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=800',
+    'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=800',
+    'https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=800',
+  ],
+  oficina: [
+    'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800',
+    'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800',
+    'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800',
+  ],
+  edificio: [
+    'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800',
+    'https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=800',
+    'https://images.unsplash.com/photo-1460472178825-e5240623afd5?w=800',
+  ],
+  terreno: [
+    'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800',
+    'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800',
+    'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800',
+  ],
+}
 
+const PROPIEDADES = [
   {
-    name: "Apartamento Giacomo · La Castellana",
-    zone: "Caracas", area: "La Castellana",
-    op: "Venta", type: "Apartamento", tag: "Apartamento",
-    price: "$1.296.000", per: "",
-    beds: 3, baths: 3, m2: 294,
-    desc: "294 m² + 41 m² de jardín. Área de servicio, maletero, 5 puestos de estacionamiento. Financiamiento disponible.",
-    ig: ""
+    id: 'prop-001',
+    nombre: 'Apartamento Giacomo · La Castellana',
+    categoria: 'VENTA',
+    precio: '$ 1.296.000',
+    ubicacion: 'La Castellana, Caracas',
+    metros: 294, habitaciones: 3, banos: 3, estacionamiento: 5,
+    descripcion: '294 m² más 41 m² de jardín. 3 habitaciones, 3 baños, área de servicio y maletero. 5 puestos de estacionamiento. Financiamiento disponible.',
+    fotos: FOTOS.apartamento,
   },
   {
-    name: "Apartamento Trompiz · La Castellana",
-    zone: "Caracas", area: "La Castellana",
-    op: "Venta", type: "Apartamento", tag: "Apartamento",
-    price: "$672.000", per: "",
-    beds: 2, baths: 3, m2: 160,
-    desc: "160 m². Estudio, área de servicio, maletero, 3 puestos de estacionamiento. Financiamiento disponible.",
-    ig: ""
+    id: 'prop-002',
+    nombre: 'Apartamento Trompiz · La Castellana',
+    categoria: 'VENTA',
+    precio: '$ 672.000',
+    ubicacion: 'La Castellana, Caracas',
+    metros: 160, habitaciones: 2, banos: 3, estacionamiento: 3,
+    descripcion: '160 m². 2 habitaciones, 3 baños, estudio y área de servicio. 3 puestos de estacionamiento y maletero. Financiamiento disponible.',
+    fotos: FOTOS.apartamento,
   },
   {
-    name: "Rancho Chana Carmen · Manzanillo",
-    zone: "Isla de Margarita", area: "Manzanillo",
-    op: "Alquiler", type: "Casa", tag: "Vacacional",
-    price: "$600", per: "/noche",
-    beds: null, baths: null, m2: null,
-    desc: "Capacidad 14 personas. Piscina, playa privada y personal de servicio. Planta eléctrica propia.",
-    ig: ""
+    id: 'prop-003',
+    nombre: 'Rancho de Chana Carmen · Manzanillo',
+    categoria: 'VACACIONES',
+    precio: 'Desde $ 600 / noche',
+    ubicacion: 'Manzanillo, Isla de Margarita',
+    metros: 0, habitaciones: 0, banos: 0, estacionamiento: 0,
+    descripcion: 'Capacidad para 14 personas. Piscina, playa privada, personal de servicio y planta eléctrica. Ubicado en Chana, Manzanillo.',
+    fotos: FOTOS.playa,
   },
   {
-    name: "Casa Mónica · Playa El Ángel",
-    zone: "Isla de Margarita", area: "Playa El Ángel",
-    op: "Alquiler", type: "Casa", tag: "Vacacional",
-    price: "$350", per: "/noche",
-    beds: null, baths: null, m2: null,
-    desc: "Casa de lujo vacacional. Capacidad 8 personas.",
-    ig: ""
+    id: 'prop-004',
+    nombre: 'Casa Mónica · Playa El Ángel',
+    categoria: 'VACACIONES',
+    precio: '$ 350 / noche',
+    ubicacion: 'Playa El Ángel, Isla de Margarita',
+    metros: 0, habitaciones: 0, banos: 0, estacionamiento: 0,
+    descripcion: 'Casa de lujo vacacional con capacidad para 8 personas, ubicada en Playa El Ángel.',
+    fotos: FOTOS.playa,
   },
   {
-    name: "Casa La Florida · Alta Florida",
-    zone: "Caracas", area: "Alta Florida",
-    op: "Alquiler", type: "Casa", tag: "Alquiler",
-    price: "", per: "/mes",
-    beds: null, baths: null, m2: null,
-    desc: "Próximamente disponible. Contáctanos para más información.",
-    ig: ""
+    id: 'prop-005',
+    nombre: 'Casa La Florida · Alta Florida',
+    categoria: 'ALQUILER',
+    precio: 'Consultar precio',
+    ubicacion: 'Alta Florida, Caracas',
+    metros: 0, habitaciones: 0, banos: 0, estacionamiento: 0,
+    descripcion: 'Próximamente disponible. Contáctanos por WhatsApp para más información.',
+    fotos: FOTOS.casa,
   },
   {
-    name: "Terrazas de Guacuco",
-    zone: "Isla de Margarita", area: "Terrazas de Guacuco",
-    op: "Alquiler", type: "Casa", tag: "Vacacional",
-    price: "$350", per: "/noche",
-    beds: null, baths: null, m2: null,
-    desc: "Cabaña con jardín. Capacidad 10 personas.",
-    ig: ""
+    id: 'prop-006',
+    nombre: 'Terrazas de Guacuco',
+    categoria: 'VACACIONES',
+    precio: '$ 350 / noche',
+    ubicacion: 'Terrazas de Guacuco, Isla de Margarita',
+    metros: 0, habitaciones: 0, banos: 0, estacionamiento: 0,
+    descripcion: 'Cabaña con jardín en Terrazas de Guacuco. Capacidad para 10 personas.',
+    fotos: FOTOS.playa,
   },
   {
-    name: "Edificio Hércules · La Urbina",
-    zone: "Caracas", area: "La Urbina",
-    op: "Venta", type: "Edificio", tag: "Edificio",
-    price: "$890.000", per: "",
-    beds: null, baths: null, m2: 1100,
-    desc: "Edificio de 1.100 m². 8 puestos de estacionamiento, local comercial, ascensor de carga.",
-    ig: ""
+    id: 'prop-007',
+    nombre: 'Apartamento Héctor · Pampatar',
+    categoria: 'VACACIONES',
+    precio: 'Desde $ 160 / noche',
+    ubicacion: 'Pampatar, Isla de Margarita',
+    metros: 0, habitaciones: 0, banos: 0, estacionamiento: 0,
+    descripcion: 'Apartamento vacacional en Loma Real. Capacidad para 6 personas.',
+    fotos: FOTOS.apartamento,
   },
   {
-    name: "PB Hatillo Humboldt · Alto Hatillo",
-    zone: "Caracas", area: "Alto Hatillo",
-    op: "Venta", type: "Apartamento", tag: "Apartamento",
-    price: "$400.000", per: "",
-    beds: 3, baths: 4, m2: 400,
-    desc: "400 m² + terraza de 150 m². Área de servicio, 4 puestos de estacionamiento. Financiamiento a dos años.",
-    ig: ""
+    id: 'prop-008',
+    nombre: 'Edificio Hércules · La Urbina',
+    categoria: 'VENTA',
+    precio: '$ 890.000',
+    ubicacion: 'La Urbina, Caracas',
+    metros: 1100, habitaciones: 0, banos: 0, estacionamiento: 8,
+    descripcion: 'Edificio de 1.100 m² ubicado en La Urbina. 8 puestos de estacionamiento, local comercial y ascensor de carga.',
+    fotos: FOTOS.edificio,
   },
   {
-    name: "Casa Río María · Los Palos Grandes",
-    zone: "Caracas", area: "Los Palos Grandes",
-    op: "Venta", type: "Casa", tag: "Casa",
-    price: "$650.000", per: "",
-    beds: null, baths: null, m2: 392,
-    desc: "Casa comercial. 392 m² de terreno.",
-    ig: ""
+    id: 'prop-009',
+    nombre: 'PB Hatillo Humboldt · Alto Hatillo',
+    categoria: 'VENTA',
+    precio: '$ 400.000',
+    ubicacion: 'Alto Hatillo, Caracas',
+    metros: 400, habitaciones: 3, banos: 4, estacionamiento: 4,
+    descripcion: 'Apartamento de 400 m² con terraza de 150 m². 3 habitaciones, 4 baños y área de servicio. 4 puestos de estacionamiento. Financiamiento a dos años.',
+    fotos: FOTOS.apartamento,
   },
+  {
+    id: 'prop-010',
+    nombre: 'Hatillo Humboldt Dúplex · Alto Hatillo',
+    categoria: 'VENTA',
+    precio: '$ 200.000',
+    ubicacion: 'Alto Hatillo, Caracas',
+    metros: 160, habitaciones: 3, banos: 3, estacionamiento: 2,
+    descripcion: 'Apartamento dúplex de 160 m². 3 habitaciones, 3 baños y área de servicio. 2 puestos de estacionamiento y maletero. Financiamiento a dos años.',
+    fotos: FOTOS.apartamento,
+  },
+  {
+    id: 'prop-011',
+    nombre: 'Hatillo Humboldt · Alto Hatillo',
+    categoria: 'VENTA',
+    precio: '$ 180.000',
+    ubicacion: 'Alto Hatillo, Caracas',
+    metros: 180, habitaciones: 3, banos: 3, estacionamiento: 2,
+    descripcion: 'Apartamento de 180 m². 3 habitaciones, 3 baños y área de servicio. 2 puestos de estacionamiento y maletero. Financiamiento a dos años.',
+    fotos: FOTOS.apartamento,
+  },
+  {
+    id: 'prop-012',
+    nombre: 'PB Arivana · La Lagunita',
+    categoria: 'VENTA',
+    precio: '$ 170.000',
+    ubicacion: 'La Lagunita, Caracas',
+    metros: 80, habitaciones: 2, banos: 2, estacionamiento: 2,
+    descripcion: 'Apartamento de 80 m² con 40 m² de terraza. 2 habitaciones, 2 baños. 2 puestos de estacionamiento y maletero.',
+    fotos: FOTOS.apartamento,
+  },
+  {
+    id: 'prop-013',
+    nombre: 'Karolina · Campo Alegre',
+    categoria: 'VENTA',
+    precio: '$ 575.000',
+    ubicacion: 'Campo Alegre, Caracas',
+    metros: 131, habitaciones: 2, banos: 2, estacionamiento: 3,
+    descripcion: 'Apartamento de 131 m². 2 habitaciones, 2 baños y área de servicio. 3 puestos de estacionamiento y maletero.',
+    fotos: FOTOS.apartamento,
+  },
+  {
+    id: 'prop-014',
+    nombre: 'Terreno La Lagunita',
+    categoria: 'VENTA',
+    precio: '$ 280.000',
+    ubicacion: 'La Lagunita, Caracas',
+    metros: 2091, habitaciones: 0, banos: 0, estacionamiento: 0,
+    descripcion: 'Terreno de 2.091 m² ubicado en la Calle B3. Incluye semisótano, piscina lista y planos.',
+    fotos: FOTOS.terreno,
+  },
+  {
+    id: 'prop-015',
+    nombre: 'Casa Río María · Los Palos Grandes',
+    categoria: 'VENTA',
+    precio: '$ 650.000',
+    ubicacion: 'Los Palos Grandes, Caracas',
+    metros: 392, habitaciones: 0, banos: 0, estacionamiento: 0,
+    descripcion: 'Casa comercial con 392 m² de terreno en Los Palos Grandes.',
+    fotos: FOTOS.casa,
+  },
+  {
+    id: 'prop-016',
+    nombre: 'Oficinas Bancaracas · La Castellana',
+    categoria: 'OFICINA',
+    precio: 'Consultar precio',
+    ubicacion: 'La Castellana, Caracas',
+    metros: 0, habitaciones: 0, banos: 0, estacionamiento: 0,
+    descripcion: 'Próximamente disponible. Contáctanos por WhatsApp para más información.',
+    fotos: FOTOS.oficina,
+  },
+  {
+    id: 'prop-017',
+    nombre: 'Locales Maneiro · Pampatar',
+    categoria: 'LOCAL',
+    precio: 'Desde $ 400 / mes',
+    ubicacion: 'Pampatar, Isla de Margarita',
+    metros: 100, habitaciones: 0, banos: 0, estacionamiento: 0,
+    descripcion: 'Locales comerciales desde 100 m². Precio desde $400 mensuales.',
+    fotos: FOTOS.oficina,
+  },
+  {
+    id: 'prop-018',
+    nombre: 'Local Ramón · El Hatillo',
+    categoria: 'LOCAL',
+    precio: '$ 600 / mes',
+    ubicacion: 'El Hatillo, Caracas',
+    metros: 37, habitaciones: 0, banos: 0, estacionamiento: 0,
+    descripcion: 'Local comercial de 37 m². Alquiler de $600 mensuales.',
+    fotos: FOTOS.oficina,
+  },
+  {
+    id: 'prop-019',
+    nombre: 'Locales Xavi · Los Palos Grandes',
+    categoria: 'LOCAL',
+    precio: 'Consultar precio',
+    ubicacion: 'Los Palos Grandes, Caracas',
+    metros: 0, habitaciones: 0, banos: 0, estacionamiento: 0,
+    descripcion: 'Próximamente disponible. Contáctanos por WhatsApp para más información.',
+    fotos: FOTOS.oficina,
+  },
+  {
+    id: 'prop-020',
+    nombre: 'Local Altamira',
+    categoria: 'LOCAL',
+    precio: '$ 1.500 / mes',
+    ubicacion: 'Altamira, Caracas',
+    metros: 50, habitaciones: 0, banos: 0, estacionamiento: 0,
+    descripcion: 'Local comercial de 50 m² en Altamira. Precio de $1.500 mensuales.',
+    fotos: FOTOS.oficina,
+  },
+]
 
-  // ── APARTAMENTOS ───────────────────────────────────────────────────────────
-
-  {
-    name: "Hatillo Humboldt Dúplex · Alto Hatillo",
-    zone: "Caracas", area: "Alto Hatillo",
-    op: "Venta", type: "Apartamento", tag: "Apartamento",
-    price: "$200.000", per: "",
-    beds: 3, baths: 3, m2: 160,
-    desc: "Dúplex de 160 m². Área de servicio, 2 puestos de estacionamiento, maletero. Financiamiento a dos años.",
-    ig: ""
-  },
-  {
-    name: "Hatillo Humboldt · Alto Hatillo",
-    zone: "Caracas", area: "Alto Hatillo",
-    op: "Venta", type: "Apartamento", tag: "Apartamento",
-    price: "$180.000", per: "",
-    beds: 3, baths: 3, m2: 180,
-    desc: "180 m². Área de servicio, 2 puestos de estacionamiento, maletero. Financiamiento a dos años.",
-    ig: ""
-  },
-  {
-    name: "PB Arivana · La Lagunita",
-    zone: "Caracas", area: "La Lagunita",
-    op: "Venta", type: "Apartamento", tag: "Apartamento",
-    price: "$170.000", per: "",
-    beds: 2, baths: 2, m2: 80,
-    desc: "80 m² + 40 m² de terraza. 2 puestos de estacionamiento, maletero.",
-    ig: ""
-  },
-  {
-    name: "Karolina · Campo Alegre",
-    zone: "Caracas", area: "Campo Alegre",
-    op: "Venta", type: "Apartamento", tag: "Apartamento",
-    price: "$575.000", per: "",
-    beds: 2, baths: 2, m2: 131,
-    desc: "131 m². Área de servicio, maletero, 3 puestos de estacionamiento.",
-    ig: ""
-  },
-  {
-    name: "Terreno La Lagunita",
-    zone: "Caracas", area: "La Lagunita",
-    op: "Venta", type: "Terreno", tag: "Terreno",
-    price: "$280.000", per: "",
-    beds: null, baths: null, m2: 2091,
-    desc: "2.091 m². Ubicado en Calle B3. Semisótano y piscina lista. Planos incluidos.",
-    ig: ""
-  },
-  {
-    name: "Apartamento Héctor · Pampatar",
-    zone: "Isla de Margarita", area: "Pampatar",
-    op: "Alquiler", type: "Apartamento", tag: "Vacacional",
-    price: "$160", per: "/noche",
-    beds: null, baths: null, m2: null,
-    desc: "Apartamento vacacional en Loma Real. Capacidad 6 personas.",
-    ig: ""
-  },
-
-  // ── OFICINAS ───────────────────────────────────────────────────────────────
-
-  {
-    name: "Oficinas Bancaracas · La Castellana",
-    zone: "Caracas", area: "La Castellana",
-    op: "Alquiler", type: "Oficina", tag: "Oficina",
-    price: "", per: "/mes",
-    beds: null, baths: null, m2: null,
-    desc: "Próximamente disponible. Contáctanos para más información.",
-    ig: ""
-  },
-
-  // ── LOCALES COMERCIALES ────────────────────────────────────────────────────
-
-  {
-    name: "Locales Maneiro · Pampatar",
-    zone: "Isla de Margarita", area: "Pampatar",
-    op: "Alquiler", type: "Local", tag: "Local",
-    price: "$400", per: "/mes",
-    beds: null, baths: null, m2: 100,
-    desc: "Locales desde 100 m². Precio desde $400 mensuales.",
-    ig: ""
-  },
-  {
-    name: "Local Ramón · El Hatillo",
-    zone: "Caracas", area: "El Hatillo",
-    op: "Alquiler", type: "Local", tag: "Local",
-    price: "$600", per: "/mes",
-    beds: null, baths: null, m2: 37,
-    desc: "Local de 37 m². Alquiler $600 mensuales.",
-    ig: ""
-  },
-  {
-    name: "Locales Xavi · Los Palos Grandes",
-    zone: "Caracas", area: "Los Palos Grandes",
-    op: "Alquiler", type: "Local", tag: "Local",
-    price: "", per: "/mes",
-    beds: null, baths: null, m2: null,
-    desc: "Próximamente disponible. Contáctanos para más información.",
-    ig: ""
-  },
-  {
-    name: "Local Altamira",
-    zone: "Caracas", area: "Altamira",
-    op: "Alquiler", type: "Local", tag: "Local",
-    price: "$1.500", per: "/mes",
-    beds: null, baths: null, m2: 50,
-    desc: "Local de 50 m². Precio $1.500 mensuales.",
-    ig: ""
-  }
-];
-
-export default PROPS;
+export default PROPIEDADES

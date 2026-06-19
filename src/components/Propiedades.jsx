@@ -1,77 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
+import PROPIEDADES from '../data/properties'
 
 const WA_BASE = 'https://wa.me/584248462562'
-
-const PROPIEDADES = [
-  {
-    id: 'prop-001',
-    nombre: 'Apartamento en Chacao',
-    categoria: 'ALQUILER',
-    precio: '$ 800 / mes',
-    ubicacion: 'Chacao, Caracas',
-    metros: 85,
-    habitaciones: 2,
-    banos: 2,
-    estacionamiento: 1,
-    descripcion: 'Moderno apartamento en zona residencial exclusiva de Chacao. Excelente iluminación natural, cocina equipada y área de lavandería.',
-    fotos: [
-      'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800',
-      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800',
-      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800',
-    ],
-  },
-  {
-    id: 'prop-002',
-    nombre: 'Casa en La Lagunita',
-    categoria: 'VENTA',
-    precio: '$ 280,000',
-    ubicacion: 'La Lagunita, Caracas',
-    metros: 320,
-    habitaciones: 4,
-    banos: 3,
-    estacionamiento: 2,
-    descripcion: 'Espectacular casa en una de las urbanizaciones más exclusivas de Caracas. Amplio jardín, piscina y terraza panorámica.',
-    fotos: [
-      'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800',
-      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800',
-      'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800',
-    ],
-  },
-  {
-    id: 'prop-003',
-    nombre: 'Apartamento Vacacional Margarita',
-    categoria: 'VACACIONES',
-    precio: '$ 120 / noche',
-    ubicacion: 'Porlamar, Isla de Margarita',
-    metros: 65,
-    habitaciones: 2,
-    banos: 1,
-    estacionamiento: 1,
-    descripcion: 'Acogedor apartamento a 5 minutos de la playa. Ideal para vacaciones en familia. Vista al mar desde la terraza.',
-    fotos: [
-      'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=800',
-      'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=800',
-      'https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=800',
-    ],
-  },
-  {
-    id: 'prop-004',
-    nombre: 'Oficina en Las Mercedes',
-    categoria: 'OFICINA',
-    precio: '$ 1,200 / mes',
-    ubicacion: 'Las Mercedes, Caracas',
-    metros: 120,
-    habitaciones: 0,
-    banos: 2,
-    estacionamiento: 2,
-    descripcion: 'Oficina corporativa en el corazón de Las Mercedes. Planta libre, piso de porcelanato, sistema eléctrico trifásico.',
-    fotos: [
-      'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800',
-      'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800',
-      'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800',
-    ],
-  },
-]
 
 // ─── Photo carousel inside card ───────────────────────────────────────────────
 function CardCarousel({ fotos, nombre }) {
@@ -258,6 +188,13 @@ export default function Propiedades({ filters, onFilterChange }) {
   // Expose setter so PropCard can call it without prop drilling
   window.__openPropModal = useCallback((prop) => setModal(prop), [])
 
+  // Filter by operation chip. "Venta" → VENTA; "Alquiler" → todo lo arrendable.
+  const visibles = PROPIEDADES.filter(p => {
+    if (filters.op === 'Venta')    return p.categoria === 'VENTA'
+    if (filters.op === 'Alquiler') return p.categoria !== 'VENTA'
+    return true
+  })
+
   return (
     <section className="section" id="propiedades">
       <div className="container">
@@ -279,11 +216,13 @@ export default function Propiedades({ filters, onFilterChange }) {
               </button>
             ))}
           </div>
-          <span className="result-count"><b>{PROPIEDADES.length}</b> propiedades</span>
+          <span className="result-count"><b>{visibles.length}</b> {visibles.length === 1 ? 'propiedad' : 'propiedades'}</span>
         </div>
 
         {/* Horizontal scroll row */}
-        <PropRow props={PROPIEDADES} />
+        {visibles.length > 0
+          ? <PropRow props={visibles} />
+          : <p style={{ color: 'var(--muted)', padding: '20px 4px' }}>Sin propiedades en esta categoría.</p>}
       </div>
 
       {/* Modal */}
