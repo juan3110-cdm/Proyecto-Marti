@@ -114,6 +114,7 @@ const PROPIEDADES = [
     metros: 1100, habitaciones: 0, banos: 0, estacionamiento: 8,
     descripcion: 'Edificio de 1.100 m² ubicado en La Urbina. 8 puestos de estacionamiento, local comercial y ascensor de carga.',
     fotos: ['/hercules-1.png', '/hercules-2.png', '/hercules-3.png'],
+    videos: ['/hercules-video.mp4'],
   },
   {
     id: 'prop-009',

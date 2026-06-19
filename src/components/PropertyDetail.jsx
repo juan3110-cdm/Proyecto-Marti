@@ -28,6 +28,13 @@ export default function PropertyDetail({ id }) {
 
   const waLink = `${WA_BASE}?text=${encodeURIComponent(`Hola, me interesa la propiedad: ${prop.nombre}`)}`
 
+  // Combined media: photos first, then videos
+  const media = [
+    ...prop.fotos.map(src => ({ type: 'image', src })),
+    ...(prop.videos || []).map(src => ({ type: 'video', src })),
+  ]
+  const current = media[mainIdx] || media[0]
+
   const specs = [
     prop.habitaciones > 0 && { Icon: BedIcon,  label: `${prop.habitaciones} ${prop.habitaciones === 1 ? 'habitación' : 'habitaciones'}` },
     prop.banos        > 0 && { Icon: BathIcon, label: `${prop.banos} ${prop.banos === 1 ? 'baño' : 'baños'}` },
@@ -46,25 +53,30 @@ export default function PropertyDetail({ id }) {
         {/* Two-column: gallery (left) + info (right) */}
         <div className="detail-layout">
 
-        {/* Gallery — vertical thumbnail strip + large portrait image */}
+        {/* Gallery — vertical thumbnail strip + large portrait media */}
         <div className="detail-gallery">
-          {prop.fotos.length > 1 && (
+          {media.length > 1 && (
             <div className="detail-thumbs">
-              {prop.fotos.map((f, i) => (
+              {media.map((m, i) => (
                 <button
                   key={i}
-                  className={`detail-thumb${i === mainIdx ? ' active' : ''}`}
+                  className={`detail-thumb${i === mainIdx ? ' active' : ''}${m.type === 'video' ? ' is-video' : ''}`}
                   onClick={() => setMainIdx(i)}
-                  aria-label={`Ver foto ${i + 1}`}
+                  aria-label={m.type === 'video' ? 'Ver video' : `Ver foto ${i + 1}`}
                 >
-                  <img src={f} alt={`miniatura ${i + 1}`} />
+                  {m.type === 'video'
+                    ? <video src={m.src} muted preload="metadata" />
+                    : <img src={m.src} alt={`miniatura ${i + 1}`} />}
+                  {m.type === 'video' && <span className="thumb-play">▶</span>}
                 </button>
               ))}
             </div>
           )}
           <div className="detail-main-img-wrap">
             <span className="detail-badge">{prop.categoria}</span>
-            <img src={prop.fotos[mainIdx]} alt={`${prop.nombre} ${mainIdx + 1}`} className="detail-main-img" />
+            {current.type === 'video'
+              ? <video src={current.src} className="detail-main-img" controls autoPlay playsInline />
+              : <img src={current.src} alt={`${prop.nombre} ${mainIdx + 1}`} className="detail-main-img" />}
           </div>
         </div>
 
