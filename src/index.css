@@ -540,8 +540,18 @@ h1,h2,h3,h4 {
   .wa-float .wa-label { display: none; }
   .wa-float { padding: 0; width: 60px; justify-content: center; right: 18px; bottom: 18px; }
 
-  /* detail mobile */
-  .detail-main-img-wrap { aspect-ratio: 4/3; }
+  /* detail mobile — stack columns, thumbs horizontal under image */
+  .detail-layout { grid-template-columns: 1fr; gap: 28px; }
+  .detail-gallery { position: static; flex-direction: column-reverse; }
+  .detail-main-img-wrap { aspect-ratio: 4/5; }
+  .detail-thumbs {
+    flex-direction: row;
+    flex: 0 0 auto;
+    max-height: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .detail-thumb { flex: 0 0 88px; height: 64px; width: 88px; }
   .detail-title { font-size: 28px; }
 }
 
@@ -569,7 +579,7 @@ h1,h2,h3,h4 {
 
 /* ── Detail page ── */
 .detail-page { padding-top: 120px; }
-.detail-wrap { max-width: 920px; }
+.detail-wrap { max-width: 1120px; }
 
 .detail-back {
   background: none;
@@ -588,16 +598,28 @@ h1,h2,h3,h4 {
 }
 .detail-back:hover { color: var(--gold-deep); }
 
-/* Gallery */
-.detail-gallery { margin-bottom: 36px; }
+/* Two-column layout: gallery left, info right */
+.detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+}
+
+/* Gallery — vertical thumb strip + large portrait image */
+.detail-gallery {
+  display: flex;
+  gap: 14px;
+  position: sticky;
+  top: 100px;
+}
 .detail-main-img-wrap {
   position: relative;
-  width: 100%;
-  aspect-ratio: 16/9;
+  flex: 1;
+  aspect-ratio: 4/5;            /* semi-vertical */
   border-radius: var(--radius-card);
   overflow: hidden;
   background: var(--paper-2);
-  margin-bottom: 14px;
 }
 .detail-main-img {
   width: 100%;
@@ -619,17 +641,19 @@ h1,h2,h3,h4 {
   padding: 5px 14px;
 }
 
-/* Thumbnails strip */
+/* Vertical thumbnail strip */
 .detail-thumbs {
   display: flex;
+  flex-direction: column;
   gap: 10px;
-  overflow-x: auto;
-  padding-bottom: 4px;
+  overflow-y: auto;
+  max-height: 100%;
+  flex: 0 0 74px;
   scrollbar-width: thin;
 }
 .detail-thumb {
-  flex: 0 0 110px;
-  height: 74px;
+  flex: 0 0 88px;
+  width: 74px;
   border-radius: 10px;
   overflow: hidden;
   border: 3px solid transparent;
@@ -642,7 +666,7 @@ h1,h2,h3,h4 {
 .detail-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* Info block */
-.detail-info { max-width: 720px; }
+.detail-info { padding-top: 8px; }
 .detail-loc {
   font-family: var(--display);
   font-size: 14px;

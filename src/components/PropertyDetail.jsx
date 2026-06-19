@@ -43,13 +43,11 @@ export default function PropertyDetail({ id }) {
           ← Volver
         </button>
 
-        {/* Gallery */}
-        <div className="detail-gallery">
-          <div className="detail-main-img-wrap">
-            <span className="detail-badge">{prop.categoria}</span>
-            <img src={prop.fotos[mainIdx]} alt={`${prop.nombre} ${mainIdx + 1}`} className="detail-main-img" />
-          </div>
+        {/* Two-column: gallery (left) + info (right) */}
+        <div className="detail-layout">
 
+        {/* Gallery — vertical thumbnail strip + large portrait image */}
+        <div className="detail-gallery">
           {prop.fotos.length > 1 && (
             <div className="detail-thumbs">
               {prop.fotos.map((f, i) => (
@@ -64,6 +62,10 @@ export default function PropertyDetail({ id }) {
               ))}
             </div>
           )}
+          <div className="detail-main-img-wrap">
+            <span className="detail-badge">{prop.categoria}</span>
+            <img src={prop.fotos[mainIdx]} alt={`${prop.nombre} ${mainIdx + 1}`} className="detail-main-img" />
+          </div>
         </div>
 
         {/* Info */}
@@ -86,6 +88,7 @@ export default function PropertyDetail({ id }) {
           <a href={waLink} target="_blank" rel="noopener" className="btn btn-gold-solid detail-wa">
             <WaIcon /> Consultar por WhatsApp
           </a>
+        </div>
         </div>
       </div>
     </section>
