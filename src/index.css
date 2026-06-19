@@ -539,20 +539,6 @@ h1,h2,h3,h4 {
   .footer-top { grid-template-columns: 1fr; }
   .wa-float .wa-label { display: none; }
   .wa-float { padding: 0; width: 60px; justify-content: center; right: 18px; bottom: 18px; }
-
-  /* detail mobile — stack columns, thumbs horizontal under image */
-  .detail-layout { grid-template-columns: 1fr; gap: 28px; }
-  .detail-gallery { position: static; flex-direction: column-reverse; }
-  .detail-main-img-wrap { aspect-ratio: 4/5; }
-  .detail-thumbs {
-    flex-direction: row;
-    flex: 0 0 auto;
-    max-height: none;
-    overflow-x: auto;
-    overflow-y: hidden;
-  }
-  .detail-thumb { flex: 0 0 88px; height: 64px; width: 88px; }
-  .detail-title { font-size: 28px; }
 }
 
 /* ================================================================
@@ -737,3 +723,20 @@ h1,h2,h3,h4 {
 }
 .detail-wa svg { width: 20px; height: 20px; }
 
+
+/* ── Detail page — mobile (placed AFTER base rules to win source order) ── */
+@media (max-width: 620px) {
+  .detail-layout { grid-template-columns: 1fr; gap: 28px; }
+  .detail-gallery { position: static; flex-direction: column-reverse; }
+  .detail-main-img-wrap { aspect-ratio: 4/5; }
+  .detail-thumbs {
+    flex-direction: row;
+    flex: 0 0 auto;
+    max-height: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .detail-thumb { flex: 0 0 88px; height: 64px; width: 88px; }
+  .detail-title { font-size: 28px; }
+  .detail-wa { width: 100%; justify-content: center; }
+}
