@@ -1,0 +1,93 @@
+import { useState, useEffect } from 'react'
+import PROPIEDADES from '../data/properties'
+import { navigate } from './useHashRoute'
+import { PinIcon, BedIcon, BathIcon, AreaIcon, WaIcon } from './Icons'
+
+const WA_BASE = 'https://wa.me/584248462562'
+
+export default function PropertyDetail({ id }) {
+  const prop = PROPIEDADES.find(p => p.id === id)
+  const [mainIdx, setMainIdx] = useState(0)
+
+  // Reset gallery + scroll to top when the property changes
+  useEffect(() => {
+    setMainIdx(0)
+    window.scrollTo(0, 0)
+  }, [id])
+
+  if (!prop) {
+    return (
+      <section className="section">
+        <div className="container" style={{ textAlign: 'center', padding: '80px 0' }}>
+          <h2 className="section-title" style={{ marginBottom: 16 }}>Propiedad no encontrada</h2>
+          <button className="btn btn-gold-solid" onClick={() => navigate('/')}>← Volver a propiedades</button>
+        </div>
+      </section>
+    )
+  }
+
+  const waLink = `${WA_BASE}?text=${encodeURIComponent(`Hola, me interesa la propiedad: ${prop.nombre}`)}`
+
+  const specs = [
+    prop.habitaciones > 0 && { Icon: BedIcon,  label: `${prop.habitaciones} ${prop.habitaciones === 1 ? 'habitación' : 'habitaciones'}` },
+    prop.banos        > 0 && { Icon: BathIcon, label: `${prop.banos} ${prop.banos === 1 ? 'baño' : 'baños'}` },
+    prop.metros       > 0 && { Icon: AreaIcon, label: `${prop.metros} m²` },
+  ].filter(Boolean)
+
+  return (
+    <section className="section detail-page" id="detalle">
+      <div className="container detail-wrap">
+
+        {/* Back link */}
+        <button className="detail-back" onClick={() => navigate('/')}>
+          ← Volver
+        </button>
+
+        {/* Gallery */}
+        <div className="detail-gallery">
+          <div className="detail-main-img-wrap">
+            <span className="detail-badge">{prop.categoria}</span>
+            <img src={prop.fotos[mainIdx]} alt={`${prop.nombre} ${mainIdx + 1}`} className="detail-main-img" />
+          </div>
+
+          {prop.fotos.length > 1 && (
+            <div className="detail-thumbs">
+              {prop.fotos.map((f, i) => (
+                <button
+                  key={i}
+                  className={`detail-thumb${i === mainIdx ? ' active' : ''}`}
+                  onClick={() => setMainIdx(i)}
+                  aria-label={`Ver foto ${i + 1}`}
+                >
+                  <img src={f} alt={`miniatura ${i + 1}`} />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Info */}
+        <div className="detail-info">
+          <div className="detail-loc"><PinIcon /> {prop.ubicacion}</div>
+          <h1 className="detail-title">{prop.nombre}</h1>
+
+          {specs.length > 0 && (
+            <div className="detail-specs">
+              {specs.map(({ Icon, label }) => (
+                <span key={label}><Icon /> {label}</span>
+              ))}
+            </div>
+          )}
+
+          <div className="detail-price">{prop.precio}</div>
+
+          <p className="detail-desc">{prop.descripcion}</p>
+
+          <a href={waLink} target="_blank" rel="noopener" className="btn btn-gold-solid detail-wa">
+            <WaIcon /> Consultar por WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+  )
+}
