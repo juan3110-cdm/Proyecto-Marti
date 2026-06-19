@@ -8,12 +8,26 @@ const WA_BASE = 'https://wa.me/584248462562'
 export default function PropertyDetail({ id }) {
   const prop = PROPIEDADES.find(p => p.id === id)
   const [mainIdx, setMainIdx] = useState(0)
+  const [zoom, setZoom] = useState(false)
 
   // Reset gallery + scroll to top when the property changes
   useEffect(() => {
     setMainIdx(0)
+    setZoom(false)
     window.scrollTo(0, 0)
   }, [id])
+
+  // Close lightbox on Escape, lock body scroll while open
+  useEffect(() => {
+    if (!zoom) return
+    const onKey = e => { if (e.key === 'Escape') setZoom(false) }
+    document.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [zoom])
 
   if (!prop) {
     return (
@@ -76,7 +90,17 @@ export default function PropertyDetail({ id }) {
             <span className="detail-badge">{prop.categoria}</span>
             {current.type === 'video'
               ? <video src={current.src} className="detail-main-img" controls autoPlay playsInline />
-              : <img src={current.src} alt={`${prop.nombre} ${mainIdx + 1}`} className="detail-main-img" />}
+              : (
+                <img
+                  src={current.src}
+                  alt={`${prop.nombre} ${mainIdx + 1}`}
+                  className="detail-main-img is-zoomable"
+                  onClick={() => setZoom(true)}
+                />
+              )}
+            {current.type !== 'video' && (
+              <button className="detail-zoom-hint" onClick={() => setZoom(true)} aria-label="Ampliar foto">⤢</button>
+            )}
           </div>
         </div>
 
@@ -103,6 +127,31 @@ export default function PropertyDetail({ id }) {
         </div>
         </div>
       </div>
+
+      {/* Lightbox / zoom overlay */}
+      {zoom && current.type !== 'video' && (
+        <div className="lightbox" onClick={() => setZoom(false)} role="dialog" aria-modal="true">
+          <button className="lightbox-close" onClick={() => setZoom(false)} aria-label="Cerrar">✕</button>
+          <img
+            src={current.src}
+            alt={prop.nombre}
+            className="lightbox-img"
+            onClick={e => e.stopPropagation()}
+          />
+          {media.filter(m => m.type === 'image').length > 1 && (
+            <div className="lightbox-nav" onClick={e => e.stopPropagation()}>
+              {prop.fotos.map((f, i) => (
+                <button
+                  key={i}
+                  className={`lightbox-dot${i === mainIdx ? ' active' : ''}`}
+                  onClick={() => setMainIdx(i)}
+                  aria-label={`Foto ${i + 1}`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </section>
   )
 }
