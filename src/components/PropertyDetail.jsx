@@ -17,17 +17,23 @@ export default function PropertyDetail({ id }) {
     window.scrollTo(0, 0)
   }, [id])
 
-  // Close lightbox on Escape, lock body scroll while open
+  const mediaCount = prop ? prop.fotos.length + (prop.videos?.length || 0) : 0
+
+  // Lightbox keyboard: Escape closes, arrows navigate; lock body scroll
   useEffect(() => {
     if (!zoom) return
-    const onKey = e => { if (e.key === 'Escape') setZoom(false) }
+    const onKey = e => {
+      if (e.key === 'Escape') setZoom(false)
+      else if (e.key === 'ArrowRight') setMainIdx(i => (i + 1) % mediaCount)
+      else if (e.key === 'ArrowLeft')  setMainIdx(i => (i - 1 + mediaCount) % mediaCount)
+    }
     document.addEventListener('keydown', onKey)
     document.body.style.overflow = 'hidden'
     return () => {
       document.removeEventListener('keydown', onKey)
       document.body.style.overflow = ''
     }
-  }, [zoom])
+  }, [zoom, mediaCount])
 
   if (!prop) {
     return (
@@ -98,9 +104,7 @@ export default function PropertyDetail({ id }) {
                   onClick={() => setZoom(true)}
                 />
               )}
-            {current.type !== 'video' && (
-              <button className="detail-zoom-hint" onClick={() => setZoom(true)} aria-label="Ampliar foto">⤢</button>
-            )}
+            <button className="detail-zoom-hint" onClick={() => setZoom(true)} aria-label="Ampliar">⤢</button>
           </div>
         </div>
 
@@ -128,24 +132,52 @@ export default function PropertyDetail({ id }) {
         </div>
       </div>
 
-      {/* Lightbox / zoom overlay */}
-      {zoom && current.type !== 'video' && (
+      {/* Lightbox / zoom overlay — navigates all media (photos + video) */}
+      {zoom && (
         <div className="lightbox" onClick={() => setZoom(false)} role="dialog" aria-modal="true">
           <button className="lightbox-close" onClick={() => setZoom(false)} aria-label="Cerrar">✕</button>
-          <img
-            src={current.src}
-            alt={prop.nombre}
-            className="lightbox-img"
-            onClick={e => e.stopPropagation()}
-          />
-          {media.filter(m => m.type === 'image').length > 1 && (
+
+          {media.length > 1 && (
+            <>
+              <button
+                className="lightbox-arrow lightbox-arrow-l"
+                onClick={e => { e.stopPropagation(); setMainIdx(i => (i - 1 + media.length) % media.length) }}
+                aria-label="Anterior"
+              >‹</button>
+              <button
+                className="lightbox-arrow lightbox-arrow-r"
+                onClick={e => { e.stopPropagation(); setMainIdx(i => (i + 1) % media.length) }}
+                aria-label="Siguiente"
+              >›</button>
+            </>
+          )}
+
+          {current.type === 'video'
+            ? (
+              <video
+                src={current.src}
+                className="lightbox-img"
+                controls autoPlay playsInline
+                onClick={e => e.stopPropagation()}
+              />
+            )
+            : (
+              <img
+                src={current.src}
+                alt={prop.nombre}
+                className="lightbox-img"
+                onClick={e => e.stopPropagation()}
+              />
+            )}
+
+          {media.length > 1 && (
             <div className="lightbox-nav" onClick={e => e.stopPropagation()}>
-              {prop.fotos.map((f, i) => (
+              {media.map((m, i) => (
                 <button
                   key={i}
-                  className={`lightbox-dot${i === mainIdx ? ' active' : ''}`}
+                  className={`lightbox-dot${i === mainIdx ? ' active' : ''}${m.type === 'video' ? ' is-video' : ''}`}
                   onClick={() => setMainIdx(i)}
-                  aria-label={`Foto ${i + 1}`}
+                  aria-label={m.type === 'video' ? 'Video' : `Foto ${i + 1}`}
                 />
               ))}
             </div>
