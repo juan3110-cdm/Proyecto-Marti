@@ -1,11 +1,17 @@
 import { useEffect } from 'react'
 
-export function useReveal() {
+// Re-runs whenever `key` changes (e.g. the hash route) so that newly
+// mounted `.reveal` elements get observed again after navigation.
+export function useReveal(key) {
   useEffect(() => {
+    const reveal = () =>
+      document.querySelectorAll('.reveal:not(.is-visible)').forEach(el => el.classList.add('is-visible'))
+
     if (!('IntersectionObserver' in window)) {
-      document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-visible'))
+      reveal()
       return
     }
+
     const io = new IntersectionObserver(
       entries => {
         entries.forEach(en => {
@@ -14,8 +20,19 @@ export function useReveal() {
       },
       { threshold: 0.1, rootMargin: '0px 0px -30px 0px' }
     )
-    // Observe all current .reveal elements on mount only
-    document.querySelectorAll('.reveal').forEach(el => io.observe(el))
-    return () => io.disconnect()
-  }, []) // run once on mount
+
+    // Observe after the DOM has painted the (re)mounted view
+    const raf = requestAnimationFrame(() => {
+      document.querySelectorAll('.reveal:not(.is-visible)').forEach(el => io.observe(el))
+    })
+
+    // Safety net: if anything is still hidden shortly after, reveal it
+    const t = setTimeout(reveal, 600)
+
+    return () => {
+      cancelAnimationFrame(raf)
+      clearTimeout(t)
+      io.disconnect()
+    }
+  }, [key])
 }

@@ -43,12 +43,37 @@ function Card({ p }) {
   )
 }
 
+// accent-insensitive normaliser
+const norm = s =>
+  (s || '').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim()
+
 export default function Propiedades({ filters, onFilterChange }) {
-  // Filter by operation chip. "Venta" → VENTA; "Alquiler" → todo lo arrendable.
+  const q = norm(filters.q)
+
   const visibles = PROPIEDADES.filter(p => {
-    if (filters.op === 'Venta')    return p.categoria === 'VENTA'
-    if (filters.op === 'Alquiler') return p.categoria !== 'VENTA'
-    return true
+    const haystack = norm(`${p.nombre} ${p.ubicacion} ${p.categoria} ${p.descripcion}`)
+
+    // Operación (chip + searchbar): Venta → VENTA; Alquiler → todo lo arrendable
+    const okOp =
+      filters.op === 'Venta'     ? p.categoria === 'VENTA' :
+      filters.op === 'Alquiler'  ? p.categoria !== 'VENTA' :
+      true
+
+    // Ciudad
+    const okZone =
+      !filters.zone || filters.zone === 'Todas' ? true :
+      filters.zone === 'Isla de Margarita'      ? norm(p.ubicacion).includes('margarita') :
+      norm(p.ubicacion).includes(norm(filters.zone))
+
+    // Tipo (Apartamento / Casa / Oficina / Local / Terreno / Edificio)
+    const okType =
+      !filters.type || filters.type === 'Todos' ? true :
+      haystack.includes(norm(filters.type))
+
+    // Texto libre
+    const okQ = !q || haystack.includes(q)
+
+    return okOp && okZone && okType && okQ
   })
 
   return (

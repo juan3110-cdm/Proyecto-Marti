@@ -19,7 +19,7 @@ const DEFAULT_FILTERS = { op: 'Todas', type: 'Todos', zone: 'Todas', q: '' }
 export default function App() {
   const [filters, setFilters] = useState(DEFAULT_FILTERS)
   const route = useHashRoute()
-  useReveal()
+  useReveal(route)
 
   const detailMatch = route.match(/^\/propiedad\/(.+)$/)
 
