@@ -76,6 +76,7 @@ export default function Hero({ onSearch }) {
                 <option value="Todos">Todos</option>
                 <option value="Apartamento">Apartamento</option>
                 <option value="Casa">Casa</option>
+                <option value="Edificio">Edificio</option>
                 <option value="Oficina">Oficina</option>
                 <option value="Local">Local</option>
                 <option value="Terreno">Terreno</option>

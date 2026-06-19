@@ -1,136 +1,262 @@
-import { useState, useEffect, useRef } from 'react'
-import PROPS from '../data/properties'
-import { PinIcon, BedIcon, BathIcon, AreaIcon, HeartIcon, ArrowIcon } from './Icons'
+import { useState, useEffect, useRef, useCallback } from 'react'
 
-const WA = 'https://wa.me/584248462562'
-const INITIAL = 8
+const WA_BASE = 'https://wa.me/584248462562'
 
-// accent-insensitive normaliser using explicit unicode range
-const norm = s =>
-  (s || '')
-    .toString()
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .trim()
+const PROPIEDADES = [
+  {
+    id: 'prop-001',
+    nombre: 'Apartamento en Chacao',
+    categoria: 'ALQUILER',
+    precio: '$ 800 / mes',
+    ubicacion: 'Chacao, Caracas',
+    metros: 85,
+    habitaciones: 2,
+    banos: 2,
+    estacionamiento: 1,
+    descripcion: 'Moderno apartamento en zona residencial exclusiva de Chacao. Excelente iluminación natural, cocina equipada y área de lavandería.',
+    fotos: [
+      'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800',
+      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800',
+      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800',
+    ],
+  },
+  {
+    id: 'prop-002',
+    nombre: 'Casa en La Lagunita',
+    categoria: 'VENTA',
+    precio: '$ 280,000',
+    ubicacion: 'La Lagunita, Caracas',
+    metros: 320,
+    habitaciones: 4,
+    banos: 3,
+    estacionamiento: 2,
+    descripcion: 'Espectacular casa en una de las urbanizaciones más exclusivas de Caracas. Amplio jardín, piscina y terraza panorámica.',
+    fotos: [
+      'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800',
+      'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800',
+    ],
+  },
+  {
+    id: 'prop-003',
+    nombre: 'Apartamento Vacacional Margarita',
+    categoria: 'VACACIONES',
+    precio: '$ 120 / noche',
+    ubicacion: 'Porlamar, Isla de Margarita',
+    metros: 65,
+    habitaciones: 2,
+    banos: 1,
+    estacionamiento: 1,
+    descripcion: 'Acogedor apartamento a 5 minutos de la playa. Ideal para vacaciones en familia. Vista al mar desde la terraza.',
+    fotos: [
+      'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=800',
+      'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=800',
+      'https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=800',
+    ],
+  },
+  {
+    id: 'prop-004',
+    nombre: 'Oficina en Las Mercedes',
+    categoria: 'OFICINA',
+    precio: '$ 1,200 / mes',
+    ubicacion: 'Las Mercedes, Caracas',
+    metros: 120,
+    habitaciones: 0,
+    banos: 2,
+    estacionamiento: 2,
+    descripcion: 'Oficina corporativa en el corazón de Las Mercedes. Planta libre, piso de porcelanato, sistema eléctrico trifásico.',
+    fotos: [
+      'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800',
+      'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800',
+      'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800',
+    ],
+  },
+]
 
-function Card({ p, index, instant }) {
-  const [fav, setFav] = useState(false)
-  const ref = useRef(null)
-  const href = p.ig || WA
-  const cityShort = p.zone === 'Isla de Margarita' ? 'Margarita' : 'Caracas'
-  const loc = p.area && p.area !== cityShort ? `${p.area} · ${p.zone}` : p.zone
+// ─── Photo carousel inside card ───────────────────────────────────────────────
+function CardCarousel({ fotos, nombre }) {
+  const [idx, setIdx] = useState(0)
 
-  // When filtering is active, reveal immediately; otherwise use scroll observer
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    if (instant) {
-      el.classList.add('is-visible')
-      return
-    }
-    if (!('IntersectionObserver' in window)) {
-      el.classList.add('is-visible')
-      return
-    }
-    const io = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { el.classList.add('is-visible'); io.unobserve(el) } },
-      { threshold: 0.1, rootMargin: '0px 0px -30px 0px' }
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [instant])
-
-  return (
-    <article ref={ref} className="card reveal" data-d={(index % 4) + 1}>
-      <a className="card-media" href={href} target="_blank" rel="noopener" aria-label={`Ver ${p.name}`}>
-        <span className="card-badge">{p.tag}</span>
-        <button
-          className={`card-fav${fav ? ' on' : ''}`}
-          aria-label="Guardar propiedad"
-          onClick={e => { e.preventDefault(); e.stopPropagation(); setFav(f => !f) }}
-        >
-          <HeartIcon />
-        </button>
-        <span className="ph"><span className="ph-tag">foto · {p.area}</span></span>
-      </a>
-      <div className="card-body">
-        <div className="card-loc"><PinIcon /> {loc}</div>
-        <h3>{p.name}</h3>
-        <div className="card-specs">
-          {p.beds  && <span><BedIcon />  {p.beds} hab</span>}
-          {p.baths && <span><BathIcon /> {p.baths} baños</span>}
-          {p.m2    && <span><AreaIcon /> {p.m2} m²</span>}
-        </div>
-        <div className="card-foot">
-          <div className="card-price">{p.price}<small>{p.per || ''}</small></div>
-          <a className="card-link" href={href} target="_blank" rel="noopener">Consultar <ArrowIcon /></a>
-        </div>
-      </div>
-    </article>
-  )
-}
-
-function Group({ zone, filters, isFiltering }) {
-  const [expanded, setExpanded] = useState(false)
-
-  // Collapse "ver más" whenever filters change
-  useEffect(() => { setExpanded(false) }, [filters])
-
-  const q = norm(filters.q)
-
-  const items = PROPS.filter(p => {
-    if (p.zone !== zone) return false
-    const okOp   = filters.op   === 'Todas' || p.op   === filters.op
-    const okType = filters.type === 'Todos' || p.type === filters.type
-    const okZone = filters.zone === 'Todas' || p.zone === filters.zone
-    const okQ    = !q || norm(`${p.area} ${p.zone} ${p.name} ${p.type}`).includes(q)
-    return okOp && okType && okZone && okQ
-  })
-
-  if (items.length === 0) return null
-
-  const cap     = isFiltering || expanded ? items.length : INITIAL
-  const visible = items.slice(0, cap)
-  const hidden  = items.length - cap
+  const prev = (e) => { e.stopPropagation(); setIdx(i => (i - 1 + fotos.length) % fotos.length) }
+  const next = (e) => { e.stopPropagation(); setIdx(i => (i + 1) % fotos.length) }
 
   return (
-    <div className="props-group">
-      <div className="group-head reveal">
-        <h3>{zone}</h3>
-        <span className="group-count">
-          <b>{items.length}</b> {items.length === 1 ? 'propiedad' : 'propiedades'}
-        </span>
-      </div>
-      <div className="props-grid">
-        {visible.map((p, i) => (
-          <Card key={`${zone}-${p.name}-${i}`} p={p} index={i} instant={isFiltering} />
-        ))}
-      </div>
-      {!isFiltering && hidden > 0 && (
-        <div className="group-more">
-          <button className="btn btn-ghost" onClick={() => setExpanded(true)}>
-            Ver {hidden} más en {zone === 'Isla de Margarita' ? 'Margarita' : zone}
-          </button>
-        </div>
+    <div className="pcard-carousel">
+      <img
+        src={fotos[idx]}
+        alt={`${nombre} foto ${idx + 1}`}
+        className="pcard-img"
+        draggable={false}
+      />
+      {fotos.length > 1 && (
+        <>
+          <button className="pcarousel-btn pcarousel-prev" onClick={prev} aria-label="Foto anterior">‹</button>
+          <button className="pcarousel-btn pcarousel-next" onClick={next} aria-label="Foto siguiente">›</button>
+          <div className="pcarousel-dots">
+            {fotos.map((_, i) => (
+              <button
+                key={i}
+                className={`pcarousel-dot${i === idx ? ' active' : ''}`}
+                onClick={e => { e.stopPropagation(); setIdx(i) }}
+                aria-label={`Ir a foto ${i + 1}`}
+              />
+            ))}
+          </div>
+        </>
       )}
     </div>
   )
 }
 
+// ─── Full-screen modal ─────────────────────────────────────────────────────────
+function Modal({ prop, onClose }) {
+  const [mainIdx, setMainIdx] = useState(0)
+  const thumbsRef = useRef(null)
+
+  // Close on Escape
+  useEffect(() => {
+    const fn = (e) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', fn)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', fn)
+      document.body.style.overflow = ''
+    }
+  }, [onClose])
+
+  const waLink = `${WA_BASE}?text=${encodeURIComponent(`Hola, me interesa la propiedad: ${prop.nombre}`)}`
+
+  const specs = [
+    prop.metros      && { icon: '📐', label: `${prop.metros} m²` },
+    prop.habitaciones > 0 && { icon: '🛏', label: `${prop.habitaciones} hab.` },
+    prop.banos       && { icon: '🚿', label: `${prop.banos} baños` },
+    prop.estacionamiento && { icon: '🚗', label: `${prop.estacionamiento} est.` },
+  ].filter(Boolean)
+
+  return (
+    <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true">
+      <div className="modal-box" onClick={e => e.stopPropagation()}>
+
+        {/* Close */}
+        <button className="modal-close" onClick={onClose} aria-label="Cerrar">✕</button>
+
+        {/* Main photo */}
+        <div className="modal-main-img-wrap">
+          <img src={prop.fotos[mainIdx]} alt={`${prop.nombre} ${mainIdx + 1}`} className="modal-main-img" />
+          {prop.fotos.length > 1 && (
+            <>
+              <button className="modal-arr modal-arr-l"
+                onClick={() => setMainIdx(i => (i - 1 + prop.fotos.length) % prop.fotos.length)}>‹</button>
+              <button className="modal-arr modal-arr-r"
+                onClick={() => setMainIdx(i => (i + 1) % prop.fotos.length)}>›</button>
+            </>
+          )}
+        </div>
+
+        {/* Thumbnails */}
+        {prop.fotos.length > 1 && (
+          <div className="modal-thumbs" ref={thumbsRef}>
+            {prop.fotos.map((f, i) => (
+              <button
+                key={i}
+                className={`modal-thumb${i === mainIdx ? ' active' : ''}`}
+                onClick={() => setMainIdx(i)}
+              >
+                <img src={f} alt={`miniatura ${i + 1}`} />
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Content */}
+        <div className="modal-content">
+          <div className="modal-header">
+            <span className="modal-badge">{prop.categoria}</span>
+            <h2 className="modal-title">{prop.nombre}</h2>
+            <p className="modal-ubicacion">📍 {prop.ubicacion}</p>
+          </div>
+
+          {/* Specs grid */}
+          {specs.length > 0 && (
+            <div className="modal-specs">
+              {specs.map(({ icon, label }) => (
+                <div className="modal-spec" key={label}>
+                  <span className="modal-spec-icon">{icon}</span>
+                  <span className="modal-spec-label">{label}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <p className="modal-desc">{prop.descripcion}</p>
+
+          <div className="modal-footer">
+            <span className="modal-price">{prop.precio}</span>
+            <a href={waLink} target="_blank" rel="noopener" className="btn btn-gold-solid modal-wa-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+              Consultar por WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── Single property card ──────────────────────────────────────────────────────
+function PropCard({ prop, onDetail }) {
+  return (
+    <article className="pcard">
+      <div className="pcard-media">
+        <span className="pcard-badge">{prop.categoria}</span>
+        <CardCarousel fotos={prop.fotos} nombre={prop.nombre} />
+      </div>
+      <div className="pcard-body">
+        <p className="pcard-ubicacion">📍 {prop.ubicacion}</p>
+        <h3 className="pcard-nombre">{prop.nombre}</h3>
+        <p className="pcard-precio">{prop.precio}</p>
+        <button className="pcard-btn" onClick={() => onDetail(prop)}>
+          Ver detalles →
+        </button>
+      </div>
+    </article>
+  )
+}
+
+// ─── Horizontal scroll row ─────────────────────────────────────────────────────
+function PropRow({ props }) {
+  const rowRef = useRef(null)
+
+  const scroll = (dir) => {
+    const el = rowRef.current
+    if (!el) return
+    const card = el.querySelector('.pcard')
+    const gap = 24
+    const amount = card ? card.offsetWidth + gap : 340
+    el.scrollBy({ left: dir * amount, behavior: 'smooth' })
+  }
+
+  return (
+    <div className="prow-wrap">
+      <button className="prow-arr prow-arr-l" onClick={() => scroll(-1)} aria-label="Anterior">‹</button>
+      <div className="prow" ref={rowRef}>
+        {props.map(p => (
+          <PropCard key={p.id} prop={p} onDetail={window.__openPropModal} />
+        ))}
+      </div>
+      <button className="prow-arr prow-arr-r" onClick={() => scroll(1)} aria-label="Siguiente">›</button>
+    </div>
+  )
+}
+
+// ─── Main export ───────────────────────────────────────────────────────────────
 export default function Propiedades({ filters, onFilterChange }) {
-  const chips = ['Todas', 'Venta', 'Alquiler']
+  const [modal, setModal] = useState(null)
 
-  const q = norm(filters.q)
-  const isFiltering = q !== '' || filters.op !== 'Todas' || filters.type !== 'Todos' || filters.zone !== 'Todas'
-
-  const total = PROPS.filter(p => {
-    const okOp   = filters.op   === 'Todas' || p.op   === filters.op
-    const okType = filters.type === 'Todos' || p.type === filters.type
-    const okZone = filters.zone === 'Todas' || p.zone === filters.zone
-    const okQ    = !q || norm(`${p.area} ${p.zone} ${p.name} ${p.type}`).includes(q)
-    return okOp && okType && okZone && okQ
-  }).length
+  // Expose setter so PropCard can call it without prop drilling
+  window.__openPropModal = useCallback((prop) => setModal(prop), [])
 
   return (
     <section className="section" id="propiedades">
@@ -140,10 +266,10 @@ export default function Propiedades({ filters, onFilterChange }) {
           <h2 className="section-title">Una selección que vale la pena conocer.</h2>
         </div>
 
-        {/* Filtros */}
+        {/* Filter chips */}
         <div className="props-bar reveal">
           <div className="filter-chips">
-            {chips.map(op => (
+            {['Todas', 'Venta', 'Alquiler'].map(op => (
               <button
                 key={op}
                 className={`chip${filters.op === op ? ' active' : ''}`}
@@ -153,108 +279,15 @@ export default function Propiedades({ filters, onFilterChange }) {
               </button>
             ))}
           </div>
-
-          {/* Filtro tipo inline */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-            <select
-              value={filters.type}
-              onChange={e => onFilterChange({ ...filters, type: e.target.value })}
-              style={{
-                fontFamily: 'var(--text)', fontWeight: 600, fontSize: 14,
-                padding: '8px 32px 8px 14px', borderRadius: 'var(--radius-pill)',
-                border: '1.5px solid var(--line)', background: 'var(--white)',
-                color: 'var(--ink)', appearance: 'none', cursor: 'pointer', outline: 'none',
-                backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23D99E00' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E\")",
-                backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center',
-              }}
-            >
-              <option value="Todos">Todos los tipos</option>
-              <option value="Apartamento">Apartamento</option>
-              <option value="Casa">Casa</option>
-              <option value="Oficina">Oficina</option>
-              <option value="Local">Local</option>
-              <option value="Terreno">Terreno</option>
-            </select>
-
-            <select
-              value={filters.zone}
-              onChange={e => onFilterChange({ ...filters, zone: e.target.value })}
-              style={{
-                fontFamily: 'var(--text)', fontWeight: 600, fontSize: 14,
-                padding: '8px 32px 8px 14px', borderRadius: 'var(--radius-pill)',
-                border: '1.5px solid var(--line)', background: 'var(--white)',
-                color: 'var(--ink)', appearance: 'none', cursor: 'pointer', outline: 'none',
-                backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23D99E00' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E\")",
-                backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center',
-              }}
-            >
-              <option value="Todas">Todas las ciudades</option>
-              <option value="Caracas">Caracas</option>
-              <option value="Isla de Margarita">Isla de Margarita</option>
-            </select>
-
-            {isFiltering && (
-              <button
-                onClick={() => onFilterChange({ op: 'Todas', type: 'Todos', zone: 'Todas', q: '' })}
-                style={{
-                  fontFamily: 'var(--text)', fontWeight: 700, fontSize: 13,
-                  padding: '8px 16px', borderRadius: 'var(--radius-pill)',
-                  border: '1.5px solid var(--gold)', background: 'transparent',
-                  color: 'var(--gold-deep)', cursor: 'pointer',
-                }}
-              >
-                Limpiar filtros ×
-              </button>
-            )}
-          </div>
-
-          <div className="result-count">
-            <b>{total}</b> {total === 1 ? 'propiedad' : 'propiedades'}
-          </div>
+          <span className="result-count"><b>{PROPIEDADES.length}</b> propiedades</span>
         </div>
 
-        {/* Búsqueda por texto */}
-        <div className="reveal" style={{ marginBottom: 32 }}>
-          <div style={{
-            display: 'flex', gap: 10, alignItems: 'center',
-            background: 'var(--white)', border: '1px solid var(--line)',
-            borderRadius: 'var(--radius)', padding: '12px 16px',
-            boxShadow: 'var(--shadow-sm)',
-          }}>
-            <svg style={{ width: 18, height: 18, stroke: 'var(--muted)', flex: 'none' }} viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-            </svg>
-            <input
-              type="text"
-              placeholder="Buscar por zona o urbanización (Altamira, Pampatar…)"
-              value={filters.q}
-              onChange={e => onFilterChange({ ...filters, q: e.target.value })}
-              style={{
-                flex: 1, border: 0, outline: 'none', fontFamily: 'var(--text)',
-                fontSize: 15, fontWeight: 500, color: 'var(--ink)',
-                background: 'transparent',
-              }}
-            />
-            {filters.q && (
-              <button onClick={() => onFilterChange({ ...filters, q: '' })}
-                style={{ border: 0, background: 'none', cursor: 'pointer', color: 'var(--muted)', fontSize: 18, lineHeight: 1 }}>
-                ×
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Grupos por ciudad */}
-        <Group zone="Caracas"           filters={filters} isFiltering={isFiltering} />
-        <Group zone="Isla de Margarita" filters={filters} isFiltering={isFiltering} />
-
-        {total === 0 && (
-          <div className="no-results show">
-            <b>Sin resultados</b>
-            Ajusta los filtros o escríbenos por WhatsApp y buscamos la propiedad ideal para ti.
-          </div>
-        )}
+        {/* Horizontal scroll row */}
+        <PropRow props={PROPIEDADES} />
       </div>
+
+      {/* Modal */}
+      {modal && <Modal prop={modal} onClose={() => setModal(null)} />}
     </section>
   )
 }

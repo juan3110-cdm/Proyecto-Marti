@@ -17,8 +17,8 @@ export default {
         'muted-dk': '#A8A39A',
       },
       fontFamily: {
-        display: ['"Cormorant Garamond"', 'Georgia', '"Times New Roman"', 'serif'],
-        sans:    ['"Hanken Grotesk"', 'system-ui', 'sans-serif'],
+        display: ['"Playfair Display"', 'Georgia', '"Times New Roman"', 'serif'],
+        sans:    ['"Playfair Display"', 'Georgia', '"Times New Roman"', 'serif'],
       },
       borderRadius: {
         card: '18px',
