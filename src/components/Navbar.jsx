@@ -1,9 +1,16 @@
 import { useState, useEffect } from 'react'
 import { LogoIcon, WaIcon } from './Icons'
+import { useHashRoute } from './useHashRoute'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  const route = useHashRoute()
+
+  // On detail pages there is no dark hero behind the navbar, so force the
+  // solid (dark-text) style regardless of scroll position.
+  const isDetail = /^\/propiedad\//.test(route)
+  const solid = scrolled || isDetail
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -15,7 +22,7 @@ export default function Navbar() {
   const close = () => setOpen(false)
 
   return (
-    <header className={`nav${scrolled ? ' scrolled' : ''}`} id="nav">
+    <header className={`nav${solid ? ' scrolled' : ''}`} id="nav">
       <div className="container nav-inner">
         <a href="#hero" className="logo" aria-label="Proyecto Martí — inicio">
           <span className="logo-mark"><LogoIcon /></span>
