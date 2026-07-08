@@ -33,7 +33,7 @@ const FOTOS = {
     'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800',
   ],
   humboldt: [
-    '/humboldt-1.jpg', '/humboldt-2.jpg', '/humboldt-3.jpg',
+    '/humboldt-2.jpg', '/humboldt-1.jpg', '/humboldt-3.jpg',
     '/humboldt-4.jpg', '/humboldt-5.jpg', '/humboldt-6.jpg',
     '/humboldt-7.jpg', '/humboldt-8.jpg', '/humboldt-9.jpg',
   ],
