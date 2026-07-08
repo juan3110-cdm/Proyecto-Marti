@@ -715,6 +715,7 @@ h1,h2,h3,h4 {
   line-height: 1.7;
   color: var(--ink-2);
   margin-bottom: 30px;
+  white-space: pre-line;
 }
 .detail-wa {
   display: inline-flex;
