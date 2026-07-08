@@ -32,6 +32,11 @@ const FOTOS = {
     'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800',
     'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800',
   ],
+  humboldt: [
+    '/humboldt-1.jpg', '/humboldt-2.jpg', '/humboldt-3.jpg',
+    '/humboldt-4.jpg', '/humboldt-5.jpg', '/humboldt-6.jpg',
+    '/humboldt-7.jpg', '/humboldt-8.jpg', '/humboldt-9.jpg',
+  ],
 }
 
 const PROPIEDADES = [
@@ -124,7 +129,7 @@ const PROPIEDADES = [
     ubicacion: 'Alto Hatillo, Caracas',
     metros: 400, habitaciones: 3, banos: 4, estacionamiento: 4,
     descripcion: 'Apartamento de 400 m² con terraza de 150 m². 3 habitaciones, 4 baños y área de servicio. 4 puestos de estacionamiento. Financiamiento a dos años.',
-    fotos: FOTOS.apartamento,
+    fotos: FOTOS.humboldt,
   },
   {
     id: 'prop-010',
@@ -134,7 +139,7 @@ const PROPIEDADES = [
     ubicacion: 'Alto Hatillo, Caracas',
     metros: 160, habitaciones: 3, banos: 3, estacionamiento: 2,
     descripcion: 'Apartamento dúplex de 160 m². 3 habitaciones, 3 baños y área de servicio. 2 puestos de estacionamiento y maletero. Financiamiento a dos años.',
-    fotos: FOTOS.apartamento,
+    fotos: FOTOS.humboldt,
   },
   {
     id: 'prop-011',
@@ -144,7 +149,7 @@ const PROPIEDADES = [
     ubicacion: 'Alto Hatillo, Caracas',
     metros: 180, habitaciones: 3, banos: 3, estacionamiento: 2,
     descripcion: 'Apartamento de 180 m². 3 habitaciones, 3 baños y área de servicio. 2 puestos de estacionamiento y maletero. Financiamiento a dos años.',
-    fotos: FOTOS.apartamento,
+    fotos: FOTOS.humboldt,
   },
   {
     id: 'prop-012',
