@@ -19,7 +19,7 @@ function Card({ p }) {
         >
           <HeartIcon />
         </button>
-        <img className="card-img" src={p.fotos[0]} alt={p.nombre} loading="lazy" />
+        <img className="card-img" src={p.portada || p.fotos[0]} alt={p.nombre} loading="lazy" />
       </div>
       <div className="card-body">
         <div className="card-loc"><PinIcon /> {p.ubicacion}</div>
