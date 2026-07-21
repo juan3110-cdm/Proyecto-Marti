@@ -42,6 +42,12 @@ const FOTOS = {
     '/castellana101-4.jpg', '/castellana101-5.jpg', '/castellana101-6.jpg',
     '/castellana101-7.jpg', '/castellana101-8.jpg',
   ],
+  mohedano7: [
+    '/mohedano7-1.jpg', '/mohedano7-2.jpg', '/mohedano7-3.jpg',
+    '/mohedano7-4.jpg', '/mohedano7-5.jpg', '/mohedano7-6.jpg',
+    '/mohedano7-7.jpg', '/mohedano7-8.jpg', '/mohedano7-9.jpg',
+    '/mohedano7-10.jpg', '/mohedano7-11.jpg',
+  ],
 }
 
 const PROPIEDADES = [
@@ -237,6 +243,16 @@ const PROPIEDADES = [
     metros: 50, habitaciones: 0, banos: 0, estacionamiento: 0,
     descripcion: 'Local comercial de 50 m² en Altamira. Precio de $1.500 mensuales.',
     fotos: FOTOS.oficina,
+  },
+  {
+    id: 'prop-021',
+    nombre: 'Mohedano 7 · Apartamento P4',
+    categoria: 'VENTA',
+    precio: '$ 672.000',
+    ubicacion: 'Urbanización La Castellana, Caracas',
+    metros: 160, habitaciones: 2, banos: 3, estacionamiento: 0,
+    descripcion: 'Mohedano 7 es un ultraprivado y exclusivo proyecto boutique de solo 9 apartamentos, ubicado en la codiciada Urbanización La Castellana (edificio en fase de culminación). Ofrece residencias desde 160 m² hasta 287 m² con ascensores privados, fachadas insonorizadas y amenidades de lujo con piscina y vista al Ávila. Garantiza máxima tranquilidad e independencia gracias a su pozo de agua, planta eléctrica total, gimnasio y vigilancia privada.\n\nApartamento P4 · 160 m². Distribución: ascensor privado, salón/comedor, cocina, balcón, patio, 2 habitaciones con baño privado, y área de servicio con lavadero y baño.',
+    fotos: FOTOS.mohedano7,
   },
 ]
 
