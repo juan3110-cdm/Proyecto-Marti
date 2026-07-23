@@ -132,7 +132,7 @@ const PROPIEDADES = [
     metros: 1100, habitaciones: 0, banos: 0, estacionamiento: 8,
     portada: '/hercules-2.jpg',
     descripcion: 'Moderno centro de operaciones de 1.100 m² ubicado en La Urbina. Cuenta con planta baja comercial, tres pisos de oficinas, ascensor, montacargas y sótano privado con 8 puestos. Una estructura impecable y versátil, diseñada para blindar tu capital y elevar tu negocio al siguiente nivel.\n\nDistribución: planta baja comercial (showroom), 3 pisos de oficinas, ascensor principal y montacargas, sótano privado con capacidad para 8 puestos de estacionamiento. Ubicación estratégica en el corazón de la Zona Industrial de La Urbina, con vista privilegiada al majestuoso Ávila.\n\nVenta: $845/m² (1.100 m²) · Alquiler: $8.000/mes.',
-    fotos: ['/hercules-1.jpg', '/hercules-2.jpg', '/hercules-3.jpg', '/hercules-4.jpg', '/hercules-5.jpg', '/hercules-6.jpg', '/hercules-7.jpg', '/hercules-8.jpg', '/hercules-9.jpg', '/hercules-10.jpg', '/hercules-11.jpg'],
+    fotos: ['/hercules-2.jpg', '/hercules-1.jpg', '/hercules-3.jpg', '/hercules-4.jpg', '/hercules-5.jpg', '/hercules-6.jpg', '/hercules-7.jpg', '/hercules-8.jpg', '/hercules-9.jpg', '/hercules-10.jpg', '/hercules-11.jpg'],
     videos: ['/hercules-video.mp4'],
   },
   {
